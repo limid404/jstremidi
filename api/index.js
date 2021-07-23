@@ -6,7 +6,7 @@ const model = require('./sdk/model.js');
 
 // Bot Setting
 const TelegramBot = require('node-telegram-bot-api');
-const token = '1816733294:AAHaWpiDXmqQHMoO3ib4YpyR9fFzf2lH-Lw'
+const token = '1928251630:AAHgX5MoSBZ3F0PACZyNucztqP2PT_eGUNA'
 const bot = new TelegramBot(token, {polling: true});
 
 state = 0;
@@ -25,7 +25,7 @@ bot.onText(/\/predict/, (msg) => {
     console.log(msg)
     bot.sendMessage(
         msg.chat.id,
-        `masukkan nilai x1|x2|x3 Contohnya 4|4|4`
+        `masukkan nilai x1|x2|x3|x4 Contohnya 4|4|4|4`
     ); 
     state = 1;
 });
@@ -38,22 +38,35 @@ bot.on('message', (msg) => {
                 parseFloat(s[0]), // string to float
                 parseFloat(s[1]),
                 parseFloat(s[2]),
+                parseFloat(s[3]),
                 ]
             ).then((jres1)=>{
             console.log(jres1);
                 
-          model.predict([parseFloat(s[0]), parseFloat(s[1]), parseFloat(s[2]),parseFloat(jres1[0]), parseFloat(jres1[1]), parseFloat(jres1[2])]);
+          model.predict([parseFloat(s[0]), parseFloat(s[1]), parseFloat(s[2]), parseFloat(s[3]), parseFloat(jres1[0]), parseFloat(jres1[1]), parseFloat(jres1[2])]), parseFloat(jres1[3]), parseFloat(jres1[4]), parseFloat(jres1[5])]);
                 bot.sendMessage(
                     msg.chat.id,
-                    `nilai Y1 yang diprediksi adalah ${jres1[0]} derajat`
+                    `nilai Y1 yang diprediksi adalah ${jres1[0]}`
                     );
                 bot.sendMessage(
                     msg.chat.id,
-                    `nilai Y2 yang diprediksi adalah ${jres1[1]} derajat`
+                    `nilai Y2 yang diprediksi adalah ${jres1[1]}`
                     );
                 bot.sendMessage(
                     msg.chat.id,
-                    `nilai Y3 yang diprediksi adalah ${jres1[2]} derajat`
+                    `nilai Y3 yang diprediksi adalah ${jres1[2]}`
+                     );
+                bot.sendMessage(
+                    msg.chat.id,
+                    `nilai Y4 yang diprediksi adalah ${jres1[3]}`
+                     );
+                 bot.sendMessage(
+                    msg.chat.id,
+                    `nilai Y5 yang diprediksi adalah ${jres1[4]}`
+                     );
+                  bot.sendMessage(
+                    msg.chat.id,
+                    `nilai Y6 yang diprediksi adalah ${jres1[5]}`
                      );
                         
             })
@@ -62,12 +75,13 @@ bot.on('message', (msg) => {
 })
 
 // routers
-r.get('/predict/:x1/:x2/:x3', function(req, res, next) {    
+r.get('/predict/:x1/:x2/:x3/:x4', function(req, res, next) {    
             model.predict(
         [
             parseFloat(req.params.x1), // string to float
             parseFloat(req.params.x2),
-            parseFloat(req.params.x3)
+            parseFloat(req.params.x3),
+            parseFloat(req.params.x4)
         ]
     ).then((jres1)=>{
        res.json(jres1)
