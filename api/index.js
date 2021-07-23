@@ -38,7 +38,7 @@ bot.on('message', (msg) => {
                 parseFloat(s[0]), // string to float
                 parseFloat(s[1]),
                 parseFloat(s[2]),
-                parseFloat(s[3]),
+                parseFloat(s[3])
                 ]
             ).then((jres1)=>{
             console.log(jres1);
